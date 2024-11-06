@@ -17,11 +17,7 @@
      ```
 
 ## Actualizar repositorio
-1. Desde VSCode o Pycharm
-   ```
-   git commit
-   ```
-2. Desde la web
+1. Desde la web
   1. Ir la pagina principal del repositorio
   2. Seleccionar las opciones `Add file` > `Upload files`
   3. Arrastrar todos los archivos del proyecto (solo python `.py`)
