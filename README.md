@@ -1,20 +1,23 @@
 # Guia para Trabajar
 
+## Antes de empezar
+- Crear un nuevo proyecto (carpeta vacia) para trabajar con GIT
+
 ## Descargar repositorio
 1. Instalar [git](https://git-scm.com/downloads) si no esta instalado
-  - Comprobar si esta instalado
+  - Comprobar si esta instalado (Terminal)
     ```
-      git --version
+    git --version
     ```
 2. Abrir la Terminal del VSCode o Pycharm
-3. Clonar este repositorio
+3. Configurar GIT
     ```
-    git clone https://github.com/AlanBogarin/sgth.git
+    git init
     ```
-4. Configurar GIT
-     ```
-     git init
-     ```
+4. Actualizar archivos locales
+    ```
+    git pull https://github.com/AlanBogarin/sgth.git
+    ```
 
 ## Actualizar repositorio
 1. Desde la web
@@ -24,4 +27,4 @@
 
 ## Recomendaciones
 1. Cada vez que abren el IDE (VSCode o Pycharm), clonar el reposotorio para actualizar modificaciones
-2. Cada vez que editen un archivo, hacer un [commit](#actualizar-repositorio)
+2. Cada vez que editen un archivo, hacer un [commit](#actualizar-archivos-locales)
