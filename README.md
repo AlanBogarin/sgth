@@ -26,5 +26,5 @@
   3. Arrastrar todos los archivos del proyecto (solo python `.py`)
 
 ## Recomendaciones
-1. Cada vez que abren el IDE (VSCode o Pycharm), clonar el reposotorio para actualizar modificaciones
-2. Cada vez que editen un archivo, hacer un [commit](#actualizar-archivos-locales)
+1. Cada vez que abren el IDE (VSCode o Pycharm), actualizar los archivos locales con el comando [pull](#actualizar-archivos-locales)
+2. Cada vez que editen un archivo, hacer un [commit](#actualizar-repositorio)
