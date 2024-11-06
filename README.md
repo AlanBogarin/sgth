@@ -24,6 +24,8 @@
   1. Ir la pagina principal del repositorio
   2. Seleccionar las opciones `Add file` > `Upload files`
   3. Arrastrar todos los archivos del proyecto (solo python `.py`)
+  4. Una vez verificado los archivos seleccionados son los correctos, hacer un `commit`
+  5. Hacer un `pull` para actualizar las configuraciones de Git
 
 ## Recomendaciones
 1. Cada vez que abren el IDE (VSCode o Pycharm), actualizar los archivos locales con el comando [pull](#actualizar-archivos-locales)
