@@ -11,6 +11,10 @@
     ```
     git clone https://github.com/AlanBogarin/sgth.git
     ```
+4. Configurar GIT
+     ```
+     git init
+     ```
 
 ## Actualizar repositorio
 1. Desde VSCode o Pycharm
