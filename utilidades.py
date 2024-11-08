@@ -16,7 +16,7 @@ def pedir_texto(info: str) -> str:
     """Asegurar el retorno de un texto no vacio"""
     resultado = None
     while not resultado:
-        resultado = input(info)
+        resultado = input(info).strip()
     return resultado
 
 def pedir_numero(info: str) -> float:
