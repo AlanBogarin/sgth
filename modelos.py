@@ -51,7 +51,7 @@ class Asistencia:
         self.llegadas_tardias: list[LlegadaTardia] = []
         self.vacaciones: list[Vacacion] = []
         self.permisos: list[Permiso] = []
-        self.horas_extras: list[TrabajoExtra] = []
+        self.trabajos_extra: list[TrabajoExtra] = []
 
     def registrar_ausencia(self, fecha: date, justificacion: str | None) -> None:
         """Registra una ausencia, justificada o no"""
@@ -69,9 +69,9 @@ class Asistencia:
         """Registra un permiso"""
         self.permisos.append(Permiso(fecha, motivo))
 
-    def registrar_hora_extra(self, fecha: date, horas: int) -> None:
+    def registrar_trabajo_extra(self, fecha: date, horas: int) -> None:
         """Registra un trabajo extra diario"""
-        self.horas_extras.append(TrabajoExtra(fecha, horas))
+        self.trabajos_extra.append(TrabajoExtra(fecha, horas))
 
     def mostrar(self) -> None:
         """Mostrar una informacion basica de una sola linea (solo cantidades)"""
