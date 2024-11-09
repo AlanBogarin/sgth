@@ -1,14 +1,54 @@
-from empleados import buscar_empleado
+from empleados import empleados, buscar_empleado
 from utilidades import esperar_tecla, limpiar_pantalla, pedir_numero, pedir_fecha
 
 def consultar_alt_registros():
     """Muestra el registro basico sobre ausencias y llegadas tardias de todos los empleados"""
+    limpiar_pantalla()
+    for empleado in empleados:
+        ausencias = len(empleado.asistencia.ausencias)
+        llegadas_tardias = len(empleado.asistencia.llegadas_tardias)
+        print("ID:", empleado.id, "ausencias:", ausencias, "llegadas tardias:", llegadas_tardias, "nombre:", empleado.nombre, empleado.apellido)
+
 def consultar_alt():
     """Muestra el registro detallado sobre ausencias y llegadas tardias de un empleado"""
+    limpiar_pantalla()
+    empleado = buscar_empleado()
+    if not empleado:
+        return
+    limpiar_pantalla()
+    print("AUSENCIAS")
+    for ausencia in empleado.asistencia.ausencias:
+        ausencia.mostrar()
+    print("LLEGADAS TARDIAS")
+    for llegada_tardia in empleado.asistencia.llegadas_tardias:
+        llegada_tardia.mostrar()
+
 def consultar_vphe_registros():
     """Muestra el registro basico sobre vacaciones, permisos y horas extras de todos los empleados"""
+    limpiar_pantalla()
+    for empleado in empleados:
+        vacaciones = len(empleado.asistencia.vacaciones)
+        permisos = len(empleado.asistencia.permisos)
+        trabajos_extra = len(empleado.asistencia.trabajos_extra)
+        print("ID:", empleado.id, "vacaciones:", vacaciones, "permisos:", permisos, "trabajo extras:", trabajos_extra, "nombre:", empleado.nombre, empleado.apellido)
+
 def consultar_vphe():
     """Muestra el registro detallado sobre vacaciones, permisos y horas extras de un empleado"""
+    limpiar_pantalla()
+    empleado = buscar_empleado()
+    if not empleado:
+        return
+    limpiar_pantalla()
+    print("VACACIONES")
+    for vacacion in empleado.asistencia.vacaciones:
+        vacacion.mostrar()
+    print("PERMISOS")
+    for permiso in empleado.asistencia.permisos:
+        permiso.mostrar()
+    print("TRABAJOS EXTRA")
+    for trabajo_extra in empleado.asistencia.trabajos_extra:
+        trabajo_extra.mostrar()
+
 def consultar_il_registros():
     """Muestra el registro basico sobre incapacidades y licensias de todos los empleados"""
 def consultar_il():
