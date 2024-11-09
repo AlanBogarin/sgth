@@ -36,12 +36,22 @@ class Permiso:
         """Mostrar una informacion basica de una sola linea"""
         print(self.fecha.strftime(FMT_FECHA), "-", self.motivo)
 
+class TrabajoExtra:
+    def __init__(self, fecha: date, horas: int) -> None:
+        self.fecha = fecha
+        self.horas = horas
+
+    def mostrar(self) -> None:
+        """Mostrar una informacion basica de una sola linea"""
+        print(self.fecha.strftime(FMT_FECHA), "-", self.horas, "hs")
+
 class Asistencia:
     def __init__(self) -> None:
         self.ausencias: list[Ausencia] = []
         self.llegadas_tardias: list[LlegadaTardia] = []
         self.vacaciones: list[Vacacion] = []
         self.permisos: list[Permiso] = []
+        self.horas_extras: list[TrabajoExtra] = []
 
     def registrar_ausencia(self, fecha: date, justificacion: str | None) -> None:
         """Registra una ausencia, justificada o no"""
@@ -52,10 +62,16 @@ class Asistencia:
         self.llegadas_tardias.append(LlegadaTardia(fecha))
 
     def registrar_vacacion(self, inicio: date, fin: date) -> None:
+        """Registra una vacacion"""
         self.vacaciones.append(Vacacion(inicio, fin))
 
     def registar_permiso(self, fecha: date, motivo: str) -> None:
+        """Registra un permiso"""
         self.permisos.append(Permiso(fecha, motivo))
+
+    def registrar_hora_extra(self, fecha: date, horas: int) -> None:
+        """Registra un trabajo extra diario"""
+        self.horas_extras.append(TrabajoExtra(fecha, horas))
 
     def mostrar(self) -> None:
         """Mostrar una informacion basica de una sola linea (solo cantidades)"""
