@@ -77,21 +77,6 @@ class Asistencia:
         """Mostrar una informacion basica de una sola linea (solo cantidades)"""
         print("ausencias:", len(self.ausencias), "llegadas tardias:", len(self.llegadas_tardias), "vacaciones:", len(self.vacaciones), "permisos:", len(self.permisos))
 
-    def mostrar_todo(self) -> None:
-        """Mostrar una informacion detallada de varias lineas"""
-        print("Ausencias:")
-        for ausencia in self.ausencias:
-            ausencia.mostrar()
-        print("Llegadas Tardias:")
-        for llegada_tardia in self.llegadas_tardias:
-            llegada_tardia.mostrar()
-        print("Vacaciones:")
-        for vacacion in self.vacaciones:
-            vacacion.mostrar()
-        print("Permisos:")
-        for permiso in self.permisos:
-            permiso.mostrar()
-
 class Puesto:
     def __init__(self, nombre: str, salario: int, inicio: date) -> None:
         self.nombre = nombre
@@ -104,6 +89,9 @@ class Puesto:
     def salario_actual(self) -> int:
         """El salario mas reciente (si se ha modificado)"""
         return self.historial_salarial[-1][1]
+
+    def cambiar_salario(self, salario: int, fecha: date | None = None) -> None:
+        self.historial_salarial.append((fecha or self.inicio, salario))
 
     def mostrar(self) -> None:
         """Mostrar una informacion basica de una sola linea"""
@@ -171,6 +159,13 @@ class Empleado:
         if direccion: self.direccion = direccion
         if barrio: self.barrio = barrio
         if ciudad: self.ciudad = ciudad
+
+    def modificar_puesto(self, nombre: str | None, salario: int | None, inicio: date | None) -> None:
+        if nombre:
+            self.trabajos_anteriores.append(Puesto(self.puesto.nombre, self.puesto.salario_actual(), self.puesto.inicio))
+            self.puesto = Puesto(nombre, salario or self.puesto.salario_actual(), inicio or self.puesto.inicio)
+        elif salario:
+            self.puesto.cambiar_salario(salario, inicio)
 
     def mostrar(self) -> None:
         """Mostrar una informacion basica de una sola linea"""
