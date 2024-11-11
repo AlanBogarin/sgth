@@ -121,4 +121,4 @@ def gestion_empleados():
             case 4: borrar_empleado()
             case 0: break
             case _: print("Opcion Invalida")
-        esperar_tecla()
+        
