@@ -61,7 +61,7 @@ def consultar_empleado():
     if empleado.trabajos_anteriores:
         trabajos_anteriores = empleado.trabajos_anteriores[0].nombre
         for trabajo_anterior in empleado.trabajos_anteriores[1:]:
-            trabajos_anteriores += "," + trabajo_anterior.nombre
+            trabajos_anteriores += ", " + trabajo_anterior.nombre
         print("Trabajos Anteriores:", trabajos_anteriores)
     print("Puesto:", empleado.puesto.nombre)
     print("Salario:", empleado.puesto.salario_actual())
