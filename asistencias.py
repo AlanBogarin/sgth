@@ -1,5 +1,5 @@
 from empleados import empleados, buscar_empleado
-from utilidades import esperar_tecla, limpiar_pantalla, pedir_numero, pedir_fecha
+from utilidades import esperar_tecla, limpiar_pantalla, pedir_numero, pedir_fecha, pedir_numero_positivo, pedir_texto, pedir_texto_opcional
 
 def consultar_alt_registros():
     """Muestra el registro basico sobre ausencias y llegadas tardias de todos los empleados"""
@@ -53,16 +53,62 @@ def consultar_il_registros():
     """Muestra el registro basico sobre incapacidades y licensias de todos los empleados"""
 def consultar_il():
     """Muestra el registro detallado sobre incapacidades y licensias de un empleado"""
+
+
 def registrar_ausencia():
     """Registra la ausencia de un empleado"""
+    limpiar_pantalla()
+    empleado = buscar_empleado()
+    if not empleado:
+        return
+    fecha = pedir_fecha("Ingrese la fecha (Dia-Mes-Año): ")
+    justificacion = pedir_texto_opcional("Ingrese la justificacion (opcional): ")
+    empleado.asistencia.registrar_ausencia(fecha, justificacion)
+    print("Registrado exitosamente")
+
 def registrar_llegada_tardia():
     """Registra la llegada tardia de un empleado"""
+    limpiar_pantalla()
+    empleado = buscar_empleado()
+    if not empleado:
+        return
+    fecha = pedir_fecha("Ingrese la fecha (Dia-Mes-Año): ")
+    empleado.asistencia.registrar_llegada_tardia(fecha)
+    print("Registrado exitosamente")
+
 def registrar_vacacion():
     """Registra una vacacion de un empleado"""
+    limpiar_pantalla()
+    empleado = buscar_empleado()
+    if not empleado:
+        return
+    inicio = pedir_fecha("Ingrese la fecha de inicio (Dia-Mes-Año): ")
+    fin = pedir_fecha("Ingrese la fecha de fin (Dia-Mes-Año): ", inicio)
+    empleado.asistencia.registrar_vacacion(inicio, fin)
+    print("Registrado exitosamente")
+
 def registrar_permiso():
     """Registra un permiso de un empleado"""
+    limpiar_pantalla()
+    empleado = buscar_empleado()
+    if not empleado:
+        return
+    fecha = pedir_fecha("Ingrese la fecha (Dia-Mes-Año): ")
+    motivo = pedir_texto("Ingrese el motivo (opcional): ")
+    empleado.asistencia.registar_permiso(fecha, motivo)
+    print("Registrado exitosamente")
+
 def registrar_horas_extra():
     """Registra las horas extras de trabajo de un empleado"""
+    limpiar_pantalla()
+    empleado = buscar_empleado()
+    if not empleado:
+        return
+    fecha = pedir_fecha("Ingrese la fecha de trabajo (Dia-Mes-Año): ")
+    horas = int(pedir_numero_positivo("Ingrese las horas trabajadas: "))
+    empleado.asistencia.registrar_trabajo_extra(fecha, horas)
+    print("Registrado exitosamente")
+
 def registrar_incapacidad():
     """Registra una incapacidad de un empleado"""
 def registrar_licensia():
