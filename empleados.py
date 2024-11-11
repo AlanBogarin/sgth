@@ -1,6 +1,7 @@
 from modelos import Empleado, Puesto
 from utilidades import (
     FMT_FECHA,
+    esperar_tecla,
     limpiar_pantalla,
     pedir_fecha,
     pedir_fecha_opcional,
@@ -120,3 +121,4 @@ def gestion_empleados():
             case 4: borrar_empleado()
             case 0: break
             case _: print("Opcion Invalida")
+        esperar_tecla()
