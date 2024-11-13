@@ -111,6 +111,7 @@ def registrar_horas_extra():
 
 def registrar_incapacidad():
     """Registra una incapacidad de un empleado"""
+
 def registrar_licensia():
     """Registra una licensia de un emplado"""
 

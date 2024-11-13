@@ -1,6 +1,10 @@
 from datetime import date
 from utilidades import FMT_FECHA
 
+DIAS_FESTIVOS = [
+    ()
+]
+
 class Ausencia:
     def __init__(self, fecha: date, justificacion: str | None) -> None:
         self.fecha = fecha
@@ -36,6 +40,18 @@ class Permiso:
         """Mostrar una informacion basica de una sola linea"""
         print(self.fecha.strftime(FMT_FECHA), "-", self.motivo)
 
+class Incapacidad:
+    def __init__(self, inicio: date, fin: date, motivo: str) -> None:
+        self.inicio = inicio
+        self.fin = fin
+        self.motivo = motivo
+
+class Licensia:
+    def __init__(self, inicio: date, fin: date, motivo: str) -> None:
+        self.inicio = inicio
+        self.fin = fin
+        self.motivo = motivo
+
 class TrabajoExtra:
     def __init__(self, fecha: date, horas: int) -> None:
         self.fecha = fecha
@@ -51,6 +67,8 @@ class Asistencia:
         self.llegadas_tardias: list[LlegadaTardia] = []
         self.vacaciones: list[Vacacion] = []
         self.permisos: list[Permiso] = []
+        self.incapacidades: list[Incapacidad] = []
+        self.licensias: list[Licensia] = []
         self.trabajos_extra: list[TrabajoExtra] = []
 
     def registrar_ausencia(self, fecha: date, justificacion: str | None) -> None:
@@ -132,10 +150,13 @@ class Empleado:
         self.trabajos_anteriores: list[Puesto] = []
         """Anteriores trabajos en la empresa"""
         self.asistencia = Asistencia()
+        self.inactivo_desde: date | None = None
 
     def tiempo_trabajando(self, fecha: date) -> int:
         """Años de trabajo del empleado"""
         delta = (fecha - self.puesto.inicio)
+        if self.inactivo_desde:
+            ...
         if delta.days:
             return (delta // 365).days
         else:
