@@ -1,6 +1,18 @@
+from datetime import date
 from utilidades import limpiar_pantalla,pedir_numero, esperar_tecla
-from empleados import  buscar_empleado,empleados
-from asistencias import  consultar_alt
+from empleados import  buscar_empleado, empleados
+
+class RegistroSalarial:
+    ...
+
+class RegistroMensual:
+    fecha: date
+    """Fecha del registro (mes, año)"""
+    registros: list[tuple[int, RegistroSalarial]]
+    """Registros de empleados (id, registro)"""
+
+registros: list[RegistroMensual] = []
+
 def total_cobrar():
     pass
 
