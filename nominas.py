@@ -6,10 +6,11 @@ class RegistroSalarial:
     ...
 
 class RegistroMensual:
-    fecha: date
-    """Fecha del registro (mes, año)"""
-    registros: list[tuple[int, RegistroSalarial]]
-    """Registros de empleados (id, registro)"""
+    def __init__(self, fecha: date, registros: list[tuple[int, RegistroSalarial]] | None = None) -> None:
+        self.fecha = fecha
+        """Fecha del registro (mes, año)"""
+        self.registros = registros or []
+        """Registros de empleados (id, registro)"""
 
 registros: list[RegistroMensual] = []
 
