@@ -2,7 +2,7 @@ from datetime import date
 from utilidades import FMT_FECHA
 
 DIAS_FESTIVOS = [
-    ()
+    (14, 5)
 ]
 
 class Ausencia:
@@ -61,14 +61,18 @@ class TrabajoExtra:
         """Mostrar una informacion basica de una sola linea"""
         print(self.fecha.strftime(FMT_FECHA), "-", self.horas, "hs")
 
+
 class Asistencia:
     def __init__(self) -> None:
+        # descuento
         self.ausencias: list[Ausencia] = []
         self.llegadas_tardias: list[LlegadaTardia] = []
-        self.vacaciones: list[Vacacion] = []
+        # neutral
+        self.vacaciones: list[Vacacion] = [] 
         self.permisos: list[Permiso] = []
         self.incapacidades: list[Incapacidad] = []
         self.licensias: list[Licensia] = []
+        # aumento
         self.trabajos_extra: list[TrabajoExtra] = []
 
     def registrar_ausencia(self, fecha: date, justificacion: str | None) -> None:

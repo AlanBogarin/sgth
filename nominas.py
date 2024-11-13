@@ -12,6 +12,9 @@ class RegistroMensual:
         self.registros = registros or []
         """Registros de empleados (id, registro)"""
 
+    def agregar_registro(self):
+        pass
+
 registros: list[RegistroMensual] = []
 
 def total_cobrar():
@@ -29,17 +32,16 @@ def calculo_nomina() -> None:
     """Descripcion del PDF
 
     - Cálculo automático de salarios basados en horas trabajadas, salarios fijos, comisiones y bonos.
-    - Gestión de deducciones obligatorias y voluntarias (impuestos, seguridad social, préstamos, adelantos etc.).
-    - Cálculo de horas extras, recargos nocturnos y festivos.
+    - Cálculo de horas extras, y dias festivos.
     """
-
     while True:
         limpiar_pantalla()
         print("="*15,"Calculo de Nomina","="*15)
-        print("1.Total a cobrar ")
-        print("2.Bonificaciones")
-        print("3.Descuentos")
-        print("0.Regresar al menu principal")
+        print("2. Bonificaciones")
+        # horas extras, dias festivos
+        print("3. Descuentos")
+        # 
+        print("0. Regresar")
         match pedir_numero("Ingrese una opcion: "):
             case 1: total_cobrar()
             case 2: consultar_bonificaciones()
