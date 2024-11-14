@@ -91,13 +91,22 @@ class Asistencia:
         """Registra un permiso"""
         self.permisos.append(Permiso(fecha, motivo))
 
+    def registrar_incapacidad(self, inicio: date, fin: date, motivo: str) -> None:
+        """Registra una ausencia por incapacidad fisica (accidentes, embarazo, etc)"""
+        self.incapacidades.append(Incapacidad(inicio, fin, motivo))
+
+    def registrar_licensia(self, inicio: date, fin: date, motivo: str) -> None:
+        """Registra una ausencia por motivos externos (duelos, medico, etc)"""
+        self.licensias.append(Licensia(inicio, fin, motivo))
+
     def registrar_trabajo_extra(self, fecha: date, horas: int) -> None:
         """Registra un trabajo extra diario"""
         self.trabajos_extra.append(TrabajoExtra(fecha, horas))
 
     def mostrar(self) -> None:
         """Mostrar una informacion basica de una sola linea (solo cantidades)"""
-        print("ausencias:", len(self.ausencias), "llegadas tardias:", len(self.llegadas_tardias), "vacaciones:", len(self.vacaciones), "permisos:", len(self.permisos))
+        print("ausencias:", len(self.ausencias), "llegadas tardias:", len(self.llegadas_tardias), "vacaciones:", len(self.vacaciones),
+              "permisos:", len(self.permisos), "incapacidades:", len(self.incapacidades), "licensias:", len(self.licensias), "trabajos extras:", len(self.trabajos_extra))
 
 class Puesto:
     def __init__(self, nombre: str, salario: int, inicio: date) -> None:
@@ -195,9 +204,11 @@ class Empleado:
     def mostrar(self) -> None:
         """Mostrar una informacion basica de una sola linea"""
         print(f"ID: {self.id} Nombre: {self.nombre}, {self.apellido} Puesto: {self.puesto.nombre} Salario: {self.puesto.salario_actual()}")
+
 class Descuento:
-    def __init__(self,ips:float=9.5 ):
-        self.ips=ips
+    def __init__(self, ips: float = 9.5) -> None:
+        self.ips = ips
+
     def desc_llegada_tar(self):
         pass
 
