@@ -51,9 +51,24 @@ def consultar_vphe():
 
 def consultar_il_registros():
     """Muestra el registro basico sobre incapacidades y licensias de todos los empleados"""
+    for empleado in empleados:
+        incapacidades = len(empleado.asistencia.incapacidades)
+        licensias = len(empleado.asistencia.licensias)
+        print("ID:", empleado.id, "incapacidades:", incapacidades, "licensias:", licensias, "nombre:", empleado.nombre, empleado.apellido)
+
 def consultar_il():
     """Muestra el registro detallado sobre incapacidades y licensias de un empleado"""
-
+    limpiar_pantalla()
+    empleado = buscar_empleado()
+    if not empleado:
+        return
+    limpiar_pantalla()
+    print("INCAPACIDADES")
+    for incapacidad in empleado.asistencia.incapacidades:
+        incapacidad.mostrar()
+    print("LICENSIAS")
+    for licensia in empleado.asistencia.licensias:
+        licensia.mostrar()
 
 def registrar_ausencia():
     """Registra la ausencia de un empleado"""
@@ -111,9 +126,27 @@ def registrar_horas_extra():
 
 def registrar_incapacidad():
     """Registra una incapacidad de un empleado"""
+    limpiar_pantalla()
+    empleado = buscar_empleado()
+    if not empleado:
+        return
+    inicio = pedir_fecha("Ingrese el inicio (Dia-Mes-Año): ")
+    fin = pedir_fecha("Ingrese el fin (Dia-Mes-Año): ", inicio)
+    motivo = pedir_texto("Ingrese el motivo: ")
+    empleado.asistencia.registrar_incapacidad(inicio, fin, motivo)
+    print("Registrado exitosamente")
 
 def registrar_licensia():
     """Registra una licensia de un emplado"""
+    limpiar_pantalla()
+    empleado = buscar_empleado()
+    if not empleado:
+        return
+    inicio = pedir_fecha("Ingrese el inicio (Dia-Mes-Año): ")
+    fin = pedir_fecha("Ingrese el fin (Dia-Mes-Año): ", inicio)
+    motivo = pedir_texto("Ingrese el motivo: ")
+    empleado.asistencia.registrar_licensia(inicio, fin, motivo)
+    print("Registrado exitosamente")
 
 def gestion_ausencias_llegadas_tardias():
     """Opciones del menu

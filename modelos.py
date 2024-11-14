@@ -46,11 +46,17 @@ class Incapacidad:
         self.fin = fin
         self.motivo = motivo
 
+    def mostrar(self) -> None:
+        print(self.inicio.strftime(FMT_FECHA), "al", self.fin.strftime(FMT_FECHA), ":", self.motivo)
+
 class Licensia:
     def __init__(self, inicio: date, fin: date, motivo: str) -> None:
         self.inicio = inicio
         self.fin = fin
         self.motivo = motivo
+
+    def mostrar(self) -> None:
+        print(self.inicio.strftime(FMT_FECHA), "al", self.fin.strftime(FMT_FECHA), ":", self.motivo)
 
 class TrabajoExtra:
     def __init__(self, fecha: date, horas: int) -> None:
@@ -60,7 +66,6 @@ class TrabajoExtra:
     def mostrar(self) -> None:
         """Mostrar una informacion basica de una sola linea"""
         print(self.fecha.strftime(FMT_FECHA), "-", self.horas, "hs")
-
 
 class Asistencia:
     def __init__(self) -> None:
