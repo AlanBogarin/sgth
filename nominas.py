@@ -36,7 +36,8 @@ def calculo_nomina() -> None:
     """
     while True:
         limpiar_pantalla()
-        print("="*15,"Calculo de Nomina","="*15)
+        # 14 +  1 + 20 + 1 + 14
+        print("=" * 15, "Generacion de Nomina", "=" * 15)
         print("2. Bonificaciones")
         # horas extras, dias festivos
         print("3. Descuentos")
