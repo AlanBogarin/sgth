@@ -10,13 +10,9 @@
     git --version
     ```
 2. Abrir la Terminal del VSCode o Pycharm
-3. Configurar GIT
+3. Clonar el repositorio
     ```
-    git init
-    ```
-4. Actualizar archivos locales
-    ```
-    git pull https://github.com/AlanBogarin/sgth.git
+    git clone https://github.com/AlanBogarin/sgth.git
     ```
 
 ## Actualizar repositorio
