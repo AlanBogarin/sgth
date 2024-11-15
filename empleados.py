@@ -42,7 +42,8 @@ def cargar_predeterminado() -> None:
     for empleado in [
         Empleado(11111111, "Alejandro", "Arguello", date(1980, 1, 1), "Km 1", "Santa Maria", "Concepcion", Puesto("Limpiador", 2000000, date(2000, 1, 1))),
         Empleado(22222222, "Benjamin", "Benitez", date(1970, 1, 1), "Km 2", "San Antonio", "Concepcion", Puesto("Gerente", 5000000, date(1990, 1, 1))),
-        Empleado(33333333, "Cesar", "Colman", date(1975, 1, 1), "Km 3", "Redencion", "Concepcion", Puesto("CEO", 7000000, date(1990, 1, 1)))
+        Empleado(33333333, "Cesar", "Colman", date(1960, 1, 1), "Km 3", "Itacurubi", "Concepcion", Puesto("Tecnico", 6000000, date(2000, 1, 1))),
+        Empleado(44444444, "Dario", "Duarte", date(1975, 1, 1), "Km 4", "Redencion", "Concepcion", Puesto("CEO", 7000000, date(1990, 1, 1))),
     ]:
         for a in range(2000, 2030):
             empleado.asistencia.registrar_llegada_tardia(date(a, 9, randint(1, 30)))
