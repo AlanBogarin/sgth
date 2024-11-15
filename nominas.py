@@ -1,6 +1,6 @@
 from datetime import date
 from utilidades import limpiar_pantalla,pedir_numero, esperar_tecla
-from empleados import  buscar_empleado, empleados
+from empleados import  buscar_empleado, empleados_activos
 
 class RegistroSalarial:
     ...

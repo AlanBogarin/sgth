@@ -1,3 +1,5 @@
+from random import randint
+from datetime import date
 from modelos import Empleado, Puesto
 from utilidades import (
     FMT_FECHA,
@@ -14,6 +16,10 @@ from utilidades import (
 empleados: list[Empleado] = []
 """Lista de todos los empleados"""
 
+def empleados_activos() -> list[Empleado]:
+    """Filtra los empleados activos"""
+    return [empleado for empleado in empleados if not empleado.inactivo]
+
 def buscar_empleado(info: str | None = None) -> Empleado | None:
     """Busca un empleado en la lista de empleados
 
@@ -27,10 +33,26 @@ def buscar_empleado(info: str | None = None) -> Empleado | None:
         return None
     id = int(pedir_numero(info))
     for empleado in empleados:
-        if empleado.id == id:
+        if empleado.id == id and not empleado.inactivo:
             return empleado
     print("Empleado no encontrado")
     return None
+
+def cargar_predeterminado() -> None:
+    for empleado in [
+        Empleado(11111111, "Alejandro", "Arguello", date(1980, 1, 1), "Km 1", "Santa Maria", "Concepcion", Puesto("Limpiador", 2000000, date(2000, 1, 1))),
+        Empleado(22222222, "Benjamin", "Benitez", date(1970, 1, 1), "Km 2", "San Antonio", "Concepcion", Puesto("Gerente", 5000000, date(1990, 1, 1))),
+        Empleado(33333333, "Cesar", "Colman", date(1975, 1, 1), "Km 3", "Redencion", "Concepcion", Puesto("CEO", 7000000, date(1990, 1, 1)))
+    ]:
+        for a in range(2000, 2030):
+            empleado.asistencia.registrar_llegada_tardia(date(a, 9, randint(1, 30)))
+            empleado.asistencia.registrar_incapacidad(date(a, 10, 1), date(1, 10, 5), "Enfermedad contagiosa")
+            empleado.asistencia.registrar_ausencia(date(a, randint(5, 7), randint(5, 7)), None)
+            empleado.asistencia.registrar_vacacion(date(a, 12, 1), date(2001, 12, 30))
+            empleado.asistencia.registar_permiso(date(a, randint(6, 8), randint(2, 20)), "Reparar vehiculo")
+            empleado.asistencia.registrar_trabajo_extra(date(a, randint(1, 4), randint(1, 20)), randint(1, 5))
+            empleado.asistencia.registrar_feriado_trabajado(date(a, 1, 1))
+            empleados.append(empleado)
 
 def registrar_empleado():
     ci = int(pedir_numero("Ingrese el CI: "))
@@ -92,7 +114,7 @@ def modificar_empleado():
 def borrar_empleado():
     empleado = buscar_empleado()
     if empleado:
-        empleados.remove(empleado)
+        empleado.inactivo = True
         print("Empleado borrado con èxito.")
 
 def gestion_empleados():

@@ -1,10 +1,18 @@
-from empleados import empleados, buscar_empleado
-from utilidades import esperar_tecla, limpiar_pantalla, pedir_numero, pedir_fecha, pedir_numero_positivo, pedir_texto, pedir_texto_opcional
+from empleados import empleados_activos, buscar_empleado
+from utilidades import (
+    esperar_tecla,
+    limpiar_pantalla,
+    pedir_numero,
+    pedir_fecha,
+    pedir_numero_positivo,
+    pedir_texto,
+    pedir_texto_opcional
+)
 
 def consultar_alt_registros():
     """Muestra el registro basico sobre ausencias y llegadas tardias de todos los empleados"""
     limpiar_pantalla()
-    for empleado in empleados:
+    for empleado in empleados_activos():
         ausencias = len(empleado.asistencia.ausencias)
         llegadas_tardias = len(empleado.asistencia.llegadas_tardias)
         print("ID:", empleado.id, "ausencias:", ausencias, "llegadas tardias:", llegadas_tardias, "nombre:", empleado.nombre, empleado.apellido)
@@ -26,7 +34,7 @@ def consultar_alt():
 def consultar_vphe_registros():
     """Muestra el registro basico sobre vacaciones, permisos y horas extras de todos los empleados"""
     limpiar_pantalla()
-    for empleado in empleados:
+    for empleado in empleados_activos():
         vacaciones = len(empleado.asistencia.vacaciones)
         permisos = len(empleado.asistencia.permisos)
         trabajos_extra = len(empleado.asistencia.trabajos_extra)
@@ -51,7 +59,7 @@ def consultar_vphe():
 
 def consultar_il_registros():
     """Muestra el registro basico sobre incapacidades y licensias de todos los empleados"""
-    for empleado in empleados:
+    for empleado in empleados_activos():
         incapacidades = len(empleado.asistencia.incapacidades)
         licensias = len(empleado.asistencia.licensias)
         print("ID:", empleado.id, "incapacidades:", incapacidades, "licensias:", licensias, "nombre:", empleado.nombre, empleado.apellido)

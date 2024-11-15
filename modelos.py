@@ -1,8 +1,16 @@
 from datetime import date
 from utilidades import FMT_FECHA
 
-DIAS_FESTIVOS = [
-    (14, 5)
+DIAS_FERIADOS = [
+    (1, 1),   # Año Nuevo
+    (1, 3),   # Día de los Héroes
+    (1, 5),   # Día del Trabajador
+    (15, 5),  # Día de la Independencia Nacional
+    (12, 6),  # Paz del Chaco
+    (15, 8),  # Fundación de Asunción
+    (29, 9),  # Batalla de Boquerón
+    (8, 12),  # Virgen de Ca’acupé
+    (25, 12), # Navidad
 ]
 
 class Ausencia:
@@ -67,6 +75,14 @@ class TrabajoExtra:
         """Mostrar una informacion basica de una sola linea"""
         print(self.fecha.strftime(FMT_FECHA), "-", self.horas, "hs")
 
+class FeriadoTrabajado:
+    def __init__(self, fecha: date) -> None:
+        self.fecha = fecha
+
+    def mostrar(self) -> None:
+        """Mostrar una informacion basica de una sola linea"""
+        print(self.fecha.strftime(FMT_FECHA))
+
 class Asistencia:
     def __init__(self) -> None:
         # descuento
@@ -79,6 +95,7 @@ class Asistencia:
         self.licensias: list[Licensia] = []
         # aumento
         self.trabajos_extra: list[TrabajoExtra] = []
+        self.feriados_trabajados: list[FeriadoTrabajado] = []
 
     def registrar_ausencia(self, fecha: date, justificacion: str | None) -> None:
         """Registra una ausencia, justificada o no"""
@@ -107,6 +124,10 @@ class Asistencia:
     def registrar_trabajo_extra(self, fecha: date, horas: int) -> None:
         """Registra un trabajo extra diario"""
         self.trabajos_extra.append(TrabajoExtra(fecha, horas))
+
+    def registrar_feriado_trabajado(self, fecha: date) -> None:
+        if (fecha.day, fecha.month) in DIAS_FERIADOS:
+            self.feriados_trabajados.append(FeriadoTrabajado(fecha))
 
     def mostrar(self) -> None:
         """Mostrar una informacion basica de una sola linea (solo cantidades)"""
@@ -168,13 +189,11 @@ class Empleado:
         self.trabajos_anteriores: list[Puesto] = []
         """Anteriores trabajos en la empresa"""
         self.asistencia = Asistencia()
-        self.inactivo_desde: date | None = None
+        self.inactivo: bool = False
 
     def tiempo_trabajando(self, fecha: date) -> int:
         """Años de trabajo del empleado"""
         delta = (fecha - self.puesto.inicio)
-        if self.inactivo_desde:
-            ...
         if delta.days:
             return (delta // 365).days
         else:
