@@ -1,17 +1,13 @@
 from datetime import date
-from utilidades import FMT_FECHA
-
-DIAS_FERIADOS = [
-    (1, 1),   # Año Nuevo
-    (1, 3),   # Día de los Héroes
-    (1, 5),   # Día del Trabajador
-    (15, 5),  # Día de la Independencia Nacional
-    (12, 6),  # Paz del Chaco
-    (15, 8),  # Fundación de Asunción
-    (29, 9),  # Batalla de Boquerón
-    (8, 12),  # Virgen de Ca’acupé
-    (25, 12), # Navidad
-]
+from utilidades import (
+    BONO_DIA_FERIADO,
+    BONO_TRABAJO_EXTRA,
+    DESCUENTO_AUSENCIA,
+    DESCUENTO_IPS,
+    DESCUENTO_LLEGADA_TARDIA,
+    FMT_FECHA,
+    comprobar_feriado
+)
 
 class Ausencia:
     def __init__(self, fecha: date, justificacion: str | None) -> None:
@@ -126,7 +122,7 @@ class Asistencia:
         self.trabajos_extra.append(TrabajoExtra(fecha, horas))
 
     def registrar_feriado_trabajado(self, fecha: date) -> None:
-        if (fecha.day, fecha.month) in DIAS_FERIADOS:
+        if comprobar_feriado(fecha):
             self.feriados_trabajados.append(FeriadoTrabajado(fecha))
 
     def mostrar(self) -> None:
@@ -230,4 +226,59 @@ class Empleado:
         print(f"ID: {self.id} Nombre: {self.nombre}, {self.apellido} Puesto: {self.puesto.nombre} Salario: {self.puesto.salario_actual()}")
 
 
+class RegistroSalarial:
+    def __init__(self, empleado: Empleado) -> None:
+        self.legajo = empleado.id
+        self.salario = empleado.puesto.salario_actual()
+        # descuento
+        self.ausencias = empleado.asistencia.ausencias
+        self.llegadas_tardias = empleado.asistencia.llegadas_tardias
+        # neutral
+        self.vacaciones = empleado.asistencia.vacaciones
+        self.permisos = empleado.asistencia.permisos
+        self.incapacidades = empleado.asistencia.incapacidades
+        self.licensias = empleado.asistencia.licensias
+        # aumento
+        self.trabajos_extra = empleado.asistencia.trabajos_extra
+        self.feriados_trabajados = empleado.asistencia.feriados_trabajados
 
+    def calcular_descuento(self) -> float:
+        """Calcula la tarifa del descuento por faltas"""
+        descuento = 0.0
+        for _ in self.ausencias:
+            descuento += DESCUENTO_AUSENCIA
+        for _ in self.llegadas_tardias:
+            descuento += DESCUENTO_LLEGADA_TARDIA
+        return descuento
+
+    def calcular_bonos(self) -> float:
+        """Calcula la tarifa de aumento por bonos"""
+        bonos = 0.0
+        salario_hora = self.salario / 30 / 8
+        for trabajo_extra in self.trabajos_extra:
+            if comprobar_feriado(trabajo_extra.fecha):
+                bono = BONO_DIA_FERIADO
+            else:
+                bono = BONO_TRABAJO_EXTRA
+            bonos += trabajo_extra.horas * (salario_hora + salario_hora * bono)
+        for feriado in self.feriados_trabajados:
+            for trabajo_extra in self.trabajos_extra:
+                if trabajo_extra.fecha == feriado.fecha: break
+            else:
+                bonos += 8 * (salario_hora + salario_hora * BONO_DIA_FERIADO)
+        return bonos
+
+    def calcular_salario(self) -> float:
+        """Calcula el salario total del empleado incluyendo horas extras y deducciones."""
+        salario = self.salario + self.calcular_bonos() - self.calcular_descuento()
+        return salario - salario * DESCUENTO_IPS
+
+class RegistroMensual:
+    def __init__(self, fecha: date, registros: list[RegistroSalarial] | None = None) -> None:
+        self.fecha = fecha
+        """Fecha del registro (mes, año)"""
+        self.registros = registros or []
+        """Registros de empleados (id, registro)"""
+
+    def agregar_registro(self, registro: RegistroSalarial) -> None:
+        self.registros.append(registro)
