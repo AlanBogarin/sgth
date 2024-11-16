@@ -47,5 +47,3 @@ def calculo_nomina() -> None:
             case 0: break
             case _: print("Opción Invalida")
         esperar_tecla()
-
-
