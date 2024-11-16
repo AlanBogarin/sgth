@@ -229,10 +229,5 @@ class Empleado:
         """Mostrar una informacion basica de una sola linea"""
         print(f"ID: {self.id} Nombre: {self.nombre}, {self.apellido} Puesto: {self.puesto.nombre} Salario: {self.puesto.salario_actual()}")
 
-class Descuento:
-    def __init__(self, ips: float = 9.5) -> None:
-        self.ips = ips
 
-    def desc_llegada_tar(self):
-        pass
 
