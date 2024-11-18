@@ -246,28 +246,36 @@ class RegistroSalarial:
     def calcular_descuento(self) -> float:
         """Calcula la tarifa del descuento por faltas"""
         descuento = 0.0
-        fecha = (self.fecha.month, self.fecha.day)
+        fecha = (self.fecha.month, self.fecha.year)
         for ausencia in self.ausencias:
-            if (ausencia.fecha.month, ausencia.fecha.day) == fecha:
-                descuento += DESCUENTO_AUSENCIA
+            if (ausencia.fecha.month, ausencia.fecha.year) != fecha:
+                continue
+            descuento += DESCUENTO_AUSENCIA
         for llegada in self.llegadas_tardias:
-            if (llegada.fecha.month, llegada.fecha.day) == fecha:
-                descuento += DESCUENTO_LLEGADA_TARDIA
+            if (llegada.fecha.month, llegada.fecha.year) != fecha:
+                continue
+            descuento += DESCUENTO_LLEGADA_TARDIA
         return descuento
 
     def calcular_bonos(self) -> float:
         """Calcula la tarifa de aumento por bonos"""
         bonos = 0.0
         salario_hora = self.salario / 30 / 8
+        fecha = (self.fecha.month, self.fecha.year)
         for extra in self.trabajos_extra:
-            if comprobar_feriado(extra.fecha) and self.fecha == extra.fecha:
+            if (extra.fecha.month, extra.fecha.year) != fecha:
+                continue
+            if comprobar_feriado(extra.fecha):
                 bono = BONO_DIA_FERIADO
             else:
                 bono = BONO_TRABAJO_EXTRA
             bonos += extra.horas * (salario_hora + salario_hora * bono)
         for feriado in self.feriados_trabajados:
+            if (feriado.fecha.month, feriado.fecha.year) != fecha:
+                continue
             for extra in self.trabajos_extra:
-                if extra.fecha == feriado.fecha: break
+                if extra.fecha == feriado.fecha:
+                    break
             else:
                 bonos += 8 * (salario_hora + salario_hora * BONO_DIA_FERIADO)
         return bonos
