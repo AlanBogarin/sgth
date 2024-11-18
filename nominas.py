@@ -27,7 +27,7 @@ def crear_registro():
     empleado = buscar_empleado()
     if not empleado:
         return
-    rsalarial = RegistroSalarial(empleado)
+    rsalarial = RegistroSalarial(fecha, empleado)
     for registro in registros:
         if registro.fecha == fecha:
             registro.agregar_registro(rsalarial)
