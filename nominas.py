@@ -16,6 +16,8 @@ def consultar_registros():
             print("Registro para", registro.fecha.strftime(FMT_FECHA_MES))
             for reg in registro.registros:
                 print("ID:", reg.empleado.id, "Descuentos:", reg.calcular_descuentos(), "Bonos:", reg.calcular_bonos())
+            # calculo de salario total (suma de salarios)
+            print("Total a pagar:", registro.pago_empleados())
             return
     print("No se encontró un registro para esa fecha.")
 
@@ -84,8 +86,8 @@ def calculo_nomina():
     """
     while True:
         limpiar_pantalla()
-        # 14 +  1 + 20 + 1 + 14
-        print("=" * 14, "Generacion de Nomina", "=" * 14)
+        # 18 +  1 + 12 + 1 + 18
+        print("=" * 18, "MENU NOMINA", "=" * 18)
         print("1. Consultar registros")
         print("2. Consultar empleado")
         print("3. Crear Registro")

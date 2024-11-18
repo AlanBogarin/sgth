@@ -303,10 +303,17 @@ class RegistroSalarial:
         """Calcula la tarifa de aumento por bonos"""
         return self.bono_trabajo_extra() + self.bono_feriado_trabajado()
 
+    def calcular_salario_neto(self) -> float:
+        """Calcula el salario bruto"""
+        return self.salario + self.calcular_bonos() - self.calcular_descuentos()
+
+    def calcular_ips(self) -> float:
+        """Calcula el descuento IPS"""
+        return self.calcular_salario_neto() * DESCUENTO_IPS
+
     def calcular_salario(self) -> float:
         """Calcula el salario total del empleado incluyendo horas extras y deducciones."""
-        salario = self.salario + self.calcular_bonos() - self.calcular_descuentos()
-        return salario - salario * DESCUENTO_IPS
+        return self.calcular_salario_neto() - self.calcular_ips()
 
 class RegistroMensual:
     def __init__(self, fecha: date, registros: list[RegistroSalarial] | None = None) -> None:
@@ -318,3 +325,10 @@ class RegistroMensual:
     def agregar_registro(self, registro: RegistroSalarial) -> None:
         """Agrega un nuevo registro salarial"""
         self.registros.append(registro)
+
+    def pago_empleados(self) -> float:
+        """Total a pagar a empleados (suma de todos los salarios)"""
+        pago = 0.0
+        for registro in self.registros:
+            pago += registro.calcular_salario()
+        return pago

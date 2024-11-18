@@ -6,7 +6,7 @@ DESCUENTO_AUSENCIA = 50000
 DESCUENTO_LLEGADA_TARDIA = 15000
 """Descuento por llegadas tardias"""
 DESCUENTO_IPS = 0.095
-"""Descuento de seguro IPS"""
+"""Descuento de seguro IPS 9.5%"""
 BONO_TRABAJO_EXTRA = 0.5
 """Bono del 50% la hora"""
 BONO_DIA_FERIADO = 1.0

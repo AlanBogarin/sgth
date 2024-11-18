@@ -253,7 +253,8 @@ def gestion_asistencia() -> None:
     """
     while True:
         limpiar_pantalla()
-        print("=" * 15, "GESTION ASISTENCIA", "=" * 15)
+        # 16 + 1 + 16 + 1 + 16
+        print("=" * 16, "MENU ASISTENCIAS", "=" * 16)
         print("1. Registro de ausencias y llegadas tardias")
         print("2. Registro de vacaciones, permisos y horas extra")
         print("3. Gestión de incapacidades y licencias")
