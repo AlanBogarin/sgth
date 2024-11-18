@@ -25,7 +25,7 @@ DIAS_FERIADOS = [
     (15, 8),  # Fundación de Asunción
     (29, 9),  # Batalla de Boquerón
     (8, 12),  # Virgen de Ca’acupé
-    (25, 12), # Navidad
+    (25, 12)  # Navidad
 ]
 
 def esperar_tecla() -> None:

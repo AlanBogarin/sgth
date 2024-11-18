@@ -229,7 +229,7 @@ class Empleado:
 class RegistroSalarial:
     def __init__(self, fecha: date, empleado: Empleado) -> None:
         self.fecha = fecha
-        self.legajo = empleado.id
+        self.empleado = empleado
         self.salario = empleado.puesto.salario_actual()
         # descuento
         self.ausencias = empleado.asistencia.ausencias
