@@ -4,7 +4,11 @@ from utilidades import FMT_FECHA_MES, limpiar_pantalla, pedir_fecha,pedir_numero
 
 registros: list[RegistroMensual] = []
 
-def consultar_registro() -> None:
+def consultar_registro():
+    """Busca un registro mensual a partir de la fecha ingresada, si
+    encuentra, muestra el salario, sino, informa que no existe un
+    registro para esa fecha
+    """
     fecha = pedir_fecha("Ingrese el mes y año a consultar (Mes-Año): ", fmt=FMT_FECHA_MES)
     for registro in registros:
         if registro.fecha == fecha:
@@ -14,7 +18,11 @@ def consultar_registro() -> None:
             return
     print("No se encontró un registro para esa fecha.")
 
-def crear_registro() -> None:
+def crear_registro():
+    """A partir de una fecha ingresada, busca o crea si no existe un
+    registro mensual, en el cual, al ingresar un empleado, se calcula
+    automaticamente los datos para el registro salarial
+    """
     fecha = pedir_fecha("Ingrese el mes y año a registrar (Mes-Año): ", fmt=FMT_FECHA_MES)
     empleado = buscar_empleado()
     if not empleado:
@@ -28,7 +36,7 @@ def crear_registro() -> None:
     registros.append(RegistroMensual(fecha, [rsalarial]))
     print("Nuevo registro creado")
 
-def calculo_nomina() -> None:
+def calculo_nomina():
     """Descripcion del PDF
 
     - Cálculo automático de salarios basados en horas trabajadas, salarios fijos, comisiones y bonos.
