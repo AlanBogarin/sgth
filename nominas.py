@@ -14,7 +14,7 @@ def consultar_registro():
         if registro.fecha == fecha:
             print(f"Registro para {registro.fecha.strftime(FMT_FECHA_MES)}:")
             for reg in registro.registros:
-                print(f"ID Empleado: {reg.legajo}, Salario Total: {reg.calcular_salario()}")
+                print("ID Empleado:", reg.legajo, "Salario Total:", reg.calcular_salario())
             return
     print("No se encontró un registro para esa fecha.")
 
@@ -46,8 +46,9 @@ def calculo_nomina():
         limpiar_pantalla()
         # 14 +  1 + 20 + 1 + 14
         print("=" * 15, "Generacion de Nomina", "=" * 15)
-        print("1. Consultar Registro")
-        print("2. Crear Registro")
+        print("1. Consultar registros")
+        print("2. Consultar empleado")
+        print("3. Crear Registro")
         print("0. Regresar")
         match pedir_numero("Ingrese una opcion: "):
             case 1: consultar_registro()

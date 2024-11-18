@@ -243,46 +243,69 @@ class RegistroSalarial:
         self.trabajos_extra = empleado.asistencia.trabajos_extra
         self.feriados_trabajados = empleado.asistencia.feriados_trabajados
 
-    def calcular_descuento(self) -> float:
-        """Calcula la tarifa del descuento por faltas"""
+    def salario_por_hora(self) -> float:
+        """Calcula el salario por hora"""
+        return self.salario / 30 / 8
+
+    def descuento_ausencia(self) -> float:
+        """Calcula el descuento por ausencias"""
         descuento = 0.0
-        fecha = (self.fecha.month, self.fecha.year)
         for ausencia in self.ausencias:
-            if (ausencia.fecha.month, ausencia.fecha.year) != fecha:
+            if (ausencia.fecha.month, ausencia.fecha.year) != (self.fecha.month, self.fecha.year):
                 continue
             descuento += DESCUENTO_AUSENCIA
+        return descuento
+
+    def descuento_llegada_tardia(self) -> float:
+        """Calcula el descuento por llegadas tardias"""
+        descuento = 0.0
         for llegada in self.llegadas_tardias:
-            if (llegada.fecha.month, llegada.fecha.year) != fecha:
+            if (llegada.fecha.month, llegada.fecha.year) != (self.fecha.month, self.fecha.year):
                 continue
             descuento += DESCUENTO_LLEGADA_TARDIA
         return descuento
 
-    def calcular_bonos(self) -> float:
-        """Calcula la tarifa de aumento por bonos"""
-        bonos = 0.0
-        salario_hora = self.salario / 30 / 8
-        fecha = (self.fecha.month, self.fecha.year)
+    def calcular_descuentos(self) -> float:
+        """Calcula la tarifa final del descuento por faltas"""
+        return self.descuento_ausencia() + self.descuento_llegada_tardia()
+
+    def bono_trabajo_extra(self) -> float:
+        """Calcula el bono por trabajos extras"""
+        bono = 0.0
+        salario_por_hora = self.salario_por_hora()
         for extra in self.trabajos_extra:
-            if (extra.fecha.month, extra.fecha.year) != fecha:
+            if (extra.fecha.month, extra.fecha.year) != (self.fecha.month, self.fecha.year):
                 continue
             if comprobar_feriado(extra.fecha):
-                bono = BONO_DIA_FERIADO
+                porcentaje = BONO_DIA_FERIADO
             else:
-                bono = BONO_TRABAJO_EXTRA
-            bonos += extra.horas * (salario_hora + salario_hora * bono)
+                porcentaje = BONO_TRABAJO_EXTRA
+            bono += extra.horas * (salario_por_hora + salario_por_hora * porcentaje)
+        return bono
+
+    def bono_feriado_trabajado(self) -> float:
+        """Calcula el bono por trabajos en dias feriados/festivos"""
+        bono = 0.0
+        salario_por_hora = self.salario_por_hora()
         for feriado in self.feriados_trabajados:
-            if (feriado.fecha.month, feriado.fecha.year) != fecha:
+            if (feriado.fecha.month, feriado.fecha.year) != (self.fecha.month, self.fecha.year):
                 continue
             for extra in self.trabajos_extra:
+                # comprueba si ya se incluyo como trabajo extra
                 if extra.fecha == feriado.fecha:
                     break
             else:
-                bonos += 8 * (salario_hora + salario_hora * BONO_DIA_FERIADO)
-        return bonos
+                # solo si no se calcula como trabajo extra, para evitar calculo duplicado
+                bono += 8 * (salario_por_hora + salario_por_hora * BONO_DIA_FERIADO)
+        return bono
+
+    def calcular_bonos(self) -> float:
+        """Calcula la tarifa de aumento por bonos"""
+        return self.bono_trabajo_extra() + self.bono_feriado_trabajado()
 
     def calcular_salario(self) -> float:
         """Calcula el salario total del empleado incluyendo horas extras y deducciones."""
-        salario = self.salario + self.calcular_bonos() - self.calcular_descuento()
+        salario = self.salario + self.calcular_bonos() - self.calcular_descuentos()
         return salario - salario * DESCUENTO_IPS
 
 class RegistroMensual:
@@ -293,4 +316,5 @@ class RegistroMensual:
         """Registros de empleados (id, registro)"""
 
     def agregar_registro(self, registro: RegistroSalarial) -> None:
+        """Agrega un nuevo registro salarial"""
         self.registros.append(registro)
