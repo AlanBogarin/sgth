@@ -85,7 +85,7 @@ def calculo_nomina():
     while True:
         limpiar_pantalla()
         # 14 +  1 + 20 + 1 + 14
-        print("=" * 15, "Generacion de Nomina", "=" * 15)
+        print("=" * 14, "Generacion de Nomina", "=" * 14)
         print("1. Consultar registros")
         print("2. Consultar empleado")
         print("3. Crear Registro")
