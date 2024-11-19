@@ -29,6 +29,7 @@ def mostrar_comprobante(rsalarial: RegistroSalarial) -> None:
     print("Total a pagar:", rsalarial.calcular_salario())
 
 def generar_comprobantes() -> None:
+    """Genera un comprobante para cada empleado del registro"""
     limpiar_pantalla()
     registro = buscar_registro()
     if not registro:
@@ -45,6 +46,7 @@ def generar_comprobantes() -> None:
     print("Total a pagar:", registro.pago_empleados() + registro.pago_ips())
 
 def generar_comprobante() -> None:
+    """Genera un comprobante para un empleado"""
     limpiar_pantalla()
     registro = buscar_registro()
     if not registro:
@@ -63,12 +65,10 @@ def generar_comprobante() -> None:
     mostrar_comprobante(rsalarial)
 
 def generacion_comprobantes() -> None:
-    """Descripcion del PDF
+    """Opciones del menu
 
-    - Emisión de recibos de pago detallados para los empleados. 
-    - Generación de informes y reportes para Talento humano (Monto total
-        del sueldo a ser pagado, Monto total por IPS empleado/empresa, Detalle
-        de descuentos y pagos en un rango de meses para un empleado, etc.)
+    - Generar comprobantes para todos los empleados
+    - Generar un comprobante para un empleado
     """
     while True:
         limpiar_pantalla()

@@ -112,10 +112,13 @@ def crear_registro() -> None:
     registro.agregar_registro(rsalarial)
 
 def calculo_nomina() -> None:
-    """Descripcion del PDF
+    """Opciones del menu
 
-    - Cálculo automático de salarios basados en horas trabajadas, salarios fijos, comisiones y bonos.
-    - Cálculo de horas extras, y dias festivos.
+    - Consultar todos los registros
+    - Consultar un solo registro
+    - Consultar un empleado de un registro
+    - Crear un registro para todos los empleados
+    - Crear un registro para un empleado
     """
     while True:
         limpiar_pantalla()
