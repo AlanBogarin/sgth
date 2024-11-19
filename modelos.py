@@ -223,8 +223,7 @@ class Empleado:
 
     def mostrar(self) -> None:
         """Mostrar una informacion basica de una sola linea"""
-        print(f"ID: {self.id} Nombre: {self.nombre}, {self.apellido} Puesto: {self.puesto.nombre} Salario: {self.puesto.salario_actual()}")
-
+        print(f"ID: {self.id} nombre: {self.nombre}, {self.apellido} puesto: {self.puesto.nombre} salario: {self.puesto.salario_actual()}")
 
 class RegistroSalarial:
     def __init__(self, fecha: date, empleado: Empleado) -> None:
@@ -304,7 +303,7 @@ class RegistroSalarial:
         return self.bono_trabajo_extra() + self.bono_feriado_trabajado()
 
     def calcular_salario_neto(self) -> float:
-        """Calcula el salario bruto"""
+        """Calcula el salario neto (sin IPS)"""
         return self.salario + self.calcular_bonos() - self.calcular_descuentos()
 
     def calcular_ips(self) -> float:
@@ -315,6 +314,10 @@ class RegistroSalarial:
         """Calcula el salario total del empleado incluyendo horas extras y deducciones."""
         return self.calcular_salario_neto() - self.calcular_ips()
 
+    def mostrar(self) -> None:
+        """Mostrar una informacion basica de una sola linea"""
+        print("ID:", self.empleado.id, "descuentos:", self.calcular_descuentos(), "bonos:", self.calcular_bonos(), "salario:", self.calcular_salario())
+
 class RegistroMensual:
     def __init__(self, fecha: date, registros: list[RegistroSalarial] | None = None) -> None:
         self.fecha = fecha
@@ -324,11 +327,25 @@ class RegistroMensual:
 
     def agregar_registro(self, registro: RegistroSalarial) -> None:
         """Agrega un nuevo registro salarial"""
+        anterior = None
+        for reg in self.registros:
+            if reg.empleado.id == registro.empleado.id:
+                anterior = reg
+        if anterior:
+            # borra el registro anterior del empleado
+            self.registros.remove(anterior)
         self.registros.append(registro)
 
-    def pago_empleados(self) -> float:
-        """Total a pagar a empleados (suma de todos los salarios)"""
-        pago = 0.0
+    def pago_ips(self) -> float:
+        """Monto a pagar a IPS (suma de todos los IPS de empleados)"""
+        monto = 0.0
         for registro in self.registros:
-            pago += registro.calcular_salario()
-        return pago
+            monto += registro.calcular_ips()
+        return monto
+
+    def pago_empleados(self) -> float:
+        """Monto a pagar a empleados (suma de todos los salarios)"""
+        monto = 0.0
+        for registro in self.registros:
+            monto += registro.calcular_salario()
+        return monto

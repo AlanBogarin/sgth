@@ -4,40 +4,40 @@ from utilidades import FMT_FECHA_MES, limpiar_pantalla, pedir_fecha, pedir_numer
 
 registros: list[RegistroMensual] = []
 
+def buscar_registro() -> RegistroMensual | None:
+    fecha = pedir_fecha("Ingrese la fecha a consultar (Mes-Año): ", fmt=FMT_FECHA_MES)
+    for registro in registros:
+        if registro.fecha == fecha:
+            return registro
+    print("No se encontró un registro para esa fecha.")
+    return None
+
 def consultar_registros():
     """Busca un registro mensual a partir de la fecha ingresada, si
     encuentra, muestra el salario, sino, informa que no existe un
     registro para esa fecha
     """
     limpiar_pantalla()
-    fecha = pedir_fecha("Ingrese la fecha a consultar (Mes-Año): ", fmt=FMT_FECHA_MES)
-    for registro in registros:
-        if registro.fecha == fecha:
-            print("Registro para", registro.fecha.strftime(FMT_FECHA_MES))
-            for reg in registro.registros:
-                print("ID:", reg.empleado.id, "Descuentos:", reg.calcular_descuentos(), "Bonos:", reg.calcular_bonos())
-            # calculo de salario total (suma de salarios)
-            print("Total a pagar:", registro.pago_empleados())
-            return
-    print("No se encontró un registro para esa fecha.")
+    registro = buscar_registro()
+    if not registro:
+        return
+    print("Registro para", registro.fecha.strftime(FMT_FECHA_MES))
+    for rsalarial in registro.registros:
+        rsalarial.mostrar()
+    print("Total a pagar:", registro.pago_empleados())
 
 def consultar_empleado():
     limpiar_pantalla()
     empleado = buscar_empleado()
     if not empleado:
         return
-    fecha = pedir_fecha("Ingrese la fecha a consultar (Mes-Año): ", fmt=FMT_FECHA_MES)
-    registro = None
-    for reg_m in registros:
-        if reg_m.fecha == fecha:
-            registro = reg_m
+    registro = buscar_registro()
     if not registro:
-        print("No hay registros para esta fecha")
         return
     rsalarial = None
-    for reg_s in registro.registros:
-        if reg_s.empleado.id == empleado.id:
-            rsalarial = reg_s
+    for reg in registro.registros:
+        if reg.empleado.id == empleado.id:
+            rsalarial = reg
     if not rsalarial:
         print("No hay registros para este empleado en la fecha ingresada")
         return
@@ -62,7 +62,7 @@ def crear_registro():
     automaticamente los datos para el registro salarial
     """
     limpiar_pantalla()
-    fecha = pedir_fecha("Ingrese el mes y año a registrar (Mes-Año): ", fmt=FMT_FECHA_MES)
+    fecha = pedir_fecha("Ingrese la fecha a registrar (Mes-Año): ", fmt=FMT_FECHA_MES)
     empleado = buscar_empleado()
     if not empleado:
         return
