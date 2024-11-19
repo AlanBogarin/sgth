@@ -1,3 +1,21 @@
+"""
+Modulo para la gestion de empleados
+
+Constantes:
+- empleados
+
+Funciones:
+- empleados_activos
+- buscar_empleado
+- cargar_predeterminado
+- registrar_empleado
+- consultar_empleados
+- consultar_empleado
+- modificar_empleado
+- borrar_empleado
+- gestion_empleados
+"""
+
 from random import randint
 from datetime import date
 from modelos import Empleado, Puesto
@@ -39,6 +57,7 @@ def buscar_empleado(info: str | None = None) -> Empleado | None:
     return None
 
 def cargar_predeterminado() -> None:
+    """Carga unos empleados ficticios de forma predeterminada"""
     for empleado in [
         Empleado(11111111, "Alejandro", "Arguello", date(1980, 1, 1), "Km 1", "Santa Maria", "Concepcion", Puesto("Limpiador", 2000000, date(2000, 1, 1))),
         Empleado(22222222, "Benjamin", "Benitez", date(1970, 1, 1), "Km 2", "San Antonio", "Concepcion", Puesto("Gerente", 5000000, date(1990, 1, 1))),
@@ -56,6 +75,7 @@ def cargar_predeterminado() -> None:
         empleados.append(empleado)
 
 def registrar_empleado() -> None:
+    """Registra un nuevo empleado a partir de los datos ingresados"""
     limpiar_pantalla()
     ci = int(pedir_numero("Ingrese el CI: "))
     nombre = pedir_texto("Ingrese nombre: ")
@@ -73,11 +93,13 @@ def registrar_empleado() -> None:
     print("Empleado registrado con èxito.")
 
 def consultar_empleados() -> None:
+    """Muestra una informacion basica de una linea para cada empleado activo"""
     limpiar_pantalla()
     for empleado in empleados_activos():
         empleado.mostrar()
 
 def consultar_empleado() -> None:
+    """Muestra una informacion detallada de un empleado activo"""
     limpiar_pantalla()
     empleado = buscar_empleado()
     if not empleado:
@@ -97,6 +119,7 @@ def consultar_empleado() -> None:
     print("Salario:", empleado.puesto.salario_actual())
 
 def modificar_empleado() -> None:
+    """Modifica los valores ingresados de un empleado activo"""
     limpiar_pantalla()
     empleado = buscar_empleado()
     if not empleado:
@@ -121,6 +144,7 @@ def modificar_empleado() -> None:
     print("Datos del empleado modificado con exito")
 
 def borrar_empleado() -> None:
+    """Da de baja a un empleado"""
     limpiar_pantalla()
     empleado = buscar_empleado()
     if empleado:

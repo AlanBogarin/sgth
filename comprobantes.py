@@ -1,3 +1,12 @@
+"""
+Modulo para la generacion de comprobantes de los empleados
+
+Funciones:
+- mostrar_comprobante
+- generar_comprobantes
+- generar_comprobante
+- generacion_comprobantes
+"""
 from empleados import buscar_empleado
 from modelos import RegistroSalarial
 from nominas import buscar_registro

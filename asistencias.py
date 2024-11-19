@@ -1,3 +1,26 @@
+"""
+Modulo para la gestion de la asistencia de los empleados
+
+Funciones:
+- consultar_alt_registros
+- consultar_alt
+- consultar_vphe_registros
+- consultar_vphe
+- consultar_il_registros
+- consultar_il
+- registrar_ausencia
+- registrar_llegada_tardia
+- registrar_vacacion
+- registrar_permiso
+- registrar_horas_extra
+- registrar_feriado_trabajado
+- registrar_incapacidad
+- registrar_licensia
+- gestion_ausencias_llegadas_tardias
+- vacaciones_permisos
+- incapacidades_licencias
+- gestion_asistencia
+"""
 from empleados import empleados_activos, buscar_empleado
 from utilidades import (
     comprobar_feriado,

@@ -1,5 +1,32 @@
+"""
+Modulo para las funciones utilitarias que necesitan
+otros modulos par su funcionamiento correcto
+
+Constantes:
+- DESCUENTO_AUSENCIA
+- DESCUENTO_LLEGADA_TARDIA
+- DESCUENTO_IPS
+- BONO_TRABAJO_EXTRA
+- BONO_DIA_FERIADO
+- FMT_FECHA
+- FMT_FECHA_MES
+- DIAS_FERIADOS
+
+Funciones:
+- esperar_tecla
+- limpiar_pantalla
+- pedir_texto
+- pedir_texto_opcional
+- pedir_numero
+- pedir_numero_opcional
+- pedir_numero_positivo
+- pedir_numero_positivo_opcional
+- comprobar_feriado
+- pedir_fecha
+- pedir_fecha_opcional
+"""
 import os
-import datetime
+from datetime import date, datetime
 
 DESCUENTO_AUSENCIA = 50000
 """Descuento por ausencias"""
@@ -34,9 +61,7 @@ def esperar_tecla() -> None:
 
 def limpiar_pantalla() -> None:
     """Eliminar el texto mostrado en pantalla"""
-    # print("\n" * 50)
-    import os
-    os.system("cls")
+    print("\n" * 50)
 
 def pedir_texto(info: str) -> str:
     """Asegurar el retorno de un texto no vacio"""
@@ -87,37 +112,37 @@ def pedir_numero_positivo_opcional(info: str) -> float | None:
             return num
         return None
 
-def comprobar_feriado(fecha: datetime.date) -> bool:
+def comprobar_feriado(fecha: date) -> bool:
     """Comprueba si la fecha es un dia feriado"""
     return (fecha.day, fecha.month) in DIAS_FERIADOS
 
 def pedir_fecha(
     info: str,
-    min: datetime.date | None = None,
-    max: datetime.date | None = None,
+    min: date | None = None,
+    max: date | None = None,
     fmt: str | None = None
-) -> datetime.date:
+) -> date:
     """Asegurar el retorno de una fecha, comprobando si esta en el rango (min, max)"""
     fecha = None
     while not fecha or (min and fecha < min) or (max and fecha > max):
         try:
-            fecha = datetime.datetime.strptime(pedir_texto(info), fmt or FMT_FECHA).date()
+            fecha = datetime.strptime(pedir_texto(info), fmt or FMT_FECHA).date()
         except ValueError:
             continue
     return fecha
 
 def pedir_fecha_opcional(
     info: str,
-    min: datetime.date | None = None,
-    max: datetime.date | None = None,
+    min: date | None = None,
+    max: date | None = None,
     fmt: str | None = None
-) -> datetime.date | None:
+) -> date | None:
     """Retorna una fecha si es valida y esta dentro del rango especificado, caso contrario retorna None"""
     while True:
         texto = pedir_texto_opcional(info)
         if texto:
             try:
-                fecha = datetime.datetime.strptime(texto, fmt or FMT_FECHA).date()
+                fecha = datetime.strptime(texto, fmt or FMT_FECHA).date()
                 if (min and fecha < min) or (max and fecha > max):
                     continue
                 return fecha

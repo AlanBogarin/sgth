@@ -1,3 +1,10 @@
+"""
+Modulo Menu Principal del programa
+
+Funciones:
+- menu
+"""
+
 from empleados import gestion_empleados
 from asistencias import gestion_asistencia
 from nominas import calculo_nomina
@@ -31,3 +38,6 @@ def menu() -> None:
             case 0: break
             case _: print("Opcion Invalida")
         esperar_tecla()
+
+if __name__ == "__main__":
+    menu()

@@ -1,3 +1,18 @@
+"""
+Modulo para la generacion de comprobantes
+
+Constantes:
+- registros
+
+Funciones:
+- buscar_registro
+- consultar_registros
+- consultar_registro
+- consultar_empleado
+- crear_registros
+- crear_registro
+- calculo_nomina
+"""
 from empleados import buscar_empleado, empleados_activos
 from modelos import RegistroMensual, RegistroSalarial
 from utilidades import FMT_FECHA_MES, limpiar_pantalla, pedir_fecha, pedir_numero, esperar_tecla
@@ -5,6 +20,7 @@ from utilidades import FMT_FECHA_MES, limpiar_pantalla, pedir_fecha, pedir_numer
 registros: list[RegistroMensual] = []
 
 def buscar_registro() -> RegistroMensual | None:
+    """Pide una fecha para buscar un registro mensual"""
     if not registros:
         print("No hay registros")
         return None
@@ -16,6 +32,7 @@ def buscar_registro() -> RegistroMensual | None:
     return None
 
 def consultar_registros() -> None:
+    """Muestra una informacion basica de una sola linea para todos los registros"""
     limpiar_pantalla()
     if not registros:
         print("No hay registros")
@@ -38,6 +55,7 @@ def consultar_registro() -> None:
     print("Total a pagar:", registro.pago_empleados())
 
 def consultar_empleado() -> None:
+    """Muestra una informacion detallada del registro salarial de un empleado"""
     limpiar_pantalla()
     registro = buscar_registro()
     if not registro:

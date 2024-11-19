@@ -1,3 +1,6 @@
+"""
+Inicio del programa, con empleados predeterminados
+"""
 from menu import menu
 from empleados import cargar_predeterminado
 
