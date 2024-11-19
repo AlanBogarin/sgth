@@ -1,5 +1,5 @@
 """
-Modulo para la generacion de comprobantes de los empleados
+Modulo para la impresion de comprobantes de los empleados
 
 Funciones:
 - mostrar_comprobante
