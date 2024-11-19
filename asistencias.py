@@ -1,5 +1,6 @@
 from empleados import empleados_activos, buscar_empleado
 from utilidades import (
+    comprobar_feriado,
     esperar_tecla,
     limpiar_pantalla,
     pedir_numero,
@@ -9,15 +10,15 @@ from utilidades import (
     pedir_texto_opcional
 )
 
-def consultar_alt_registros():
+def consultar_alt_registros() -> None:
     """Muestra el registro basico sobre ausencias y llegadas tardias de todos los empleados"""
     limpiar_pantalla()
     for empleado in empleados_activos():
         ausencias = len(empleado.asistencia.ausencias)
         llegadas_tardias = len(empleado.asistencia.llegadas_tardias)
-        print("ID:", empleado.id, "ausencias:", ausencias, "llegadas tardias:", llegadas_tardias, "nombre:", empleado.nombre, empleado.apellido)
+        print("id:", empleado.id, "ausencias:", ausencias, "llegadas tardias:", llegadas_tardias, "nombre:", empleado.nombre, empleado.apellido)
 
-def consultar_alt():
+def consultar_alt() -> None:
     """Muestra el registro detallado sobre ausencias y llegadas tardias de un empleado"""
     limpiar_pantalla()
     empleado = buscar_empleado()
@@ -31,16 +32,16 @@ def consultar_alt():
     for llegada_tardia in empleado.asistencia.llegadas_tardias:
         llegada_tardia.mostrar()
 
-def consultar_vphe_registros():
+def consultar_vphe_registros() -> None:
     """Muestra el registro basico sobre vacaciones, permisos y horas extras de todos los empleados"""
     limpiar_pantalla()
     for empleado in empleados_activos():
         vacaciones = len(empleado.asistencia.vacaciones)
         permisos = len(empleado.asistencia.permisos)
         trabajos_extra = len(empleado.asistencia.trabajos_extra)
-        print("ID:", empleado.id, "vacaciones:", vacaciones, "permisos:", permisos, "trabajo extras:", trabajos_extra, "nombre:", empleado.nombre, empleado.apellido)
+        print("id:", empleado.id, "vacaciones:", vacaciones, "permisos:", permisos, "trabajo extras:", trabajos_extra, "nombre:", empleado.nombre, empleado.apellido)
 
-def consultar_vphe():
+def consultar_vphe() -> None:
     """Muestra el registro detallado sobre vacaciones, permisos y horas extras de un empleado"""
     limpiar_pantalla()
     empleado = buscar_empleado()
@@ -57,14 +58,14 @@ def consultar_vphe():
     for trabajo_extra in empleado.asistencia.trabajos_extra:
         trabajo_extra.mostrar()
 
-def consultar_il_registros():
+def consultar_il_registros() -> None:
     """Muestra el registro basico sobre incapacidades y licensias de todos los empleados"""
     for empleado in empleados_activos():
         incapacidades = len(empleado.asistencia.incapacidades)
         licensias = len(empleado.asistencia.licensias)
-        print("ID:", empleado.id, "incapacidades:", incapacidades, "licensias:", licensias, "nombre:", empleado.nombre, empleado.apellido)
+        print("id:", empleado.id, "incapacidades:", incapacidades, "licensias:", licensias, "nombre:", empleado.nombre, empleado.apellido)
 
-def consultar_il():
+def consultar_il() -> None:
     """Muestra el registro detallado sobre incapacidades y licensias de un empleado"""
     limpiar_pantalla()
     empleado = buscar_empleado()
@@ -78,7 +79,7 @@ def consultar_il():
     for licensia in empleado.asistencia.licensias:
         licensia.mostrar()
 
-def registrar_ausencia():
+def registrar_ausencia() -> None:
     """Registra la ausencia de un empleado"""
     limpiar_pantalla()
     empleado = buscar_empleado()
@@ -89,7 +90,7 @@ def registrar_ausencia():
     empleado.asistencia.registrar_ausencia(fecha, justificacion)
     print("Registrado exitosamente")
 
-def registrar_llegada_tardia():
+def registrar_llegada_tardia() -> None:
     """Registra la llegada tardia de un empleado"""
     limpiar_pantalla()
     empleado = buscar_empleado()
@@ -99,7 +100,7 @@ def registrar_llegada_tardia():
     empleado.asistencia.registrar_llegada_tardia(fecha)
     print("Registrado exitosamente")
 
-def registrar_vacacion():
+def registrar_vacacion() -> None:
     """Registra una vacacion de un empleado"""
     limpiar_pantalla()
     empleado = buscar_empleado()
@@ -110,7 +111,7 @@ def registrar_vacacion():
     empleado.asistencia.registrar_vacacion(inicio, fin)
     print("Registrado exitosamente")
 
-def registrar_permiso():
+def registrar_permiso() -> None:
     """Registra un permiso de un empleado"""
     limpiar_pantalla()
     empleado = buscar_empleado()
@@ -121,7 +122,7 @@ def registrar_permiso():
     empleado.asistencia.registar_permiso(fecha, motivo)
     print("Registrado exitosamente")
 
-def registrar_horas_extra():
+def registrar_horas_extra() -> None:
     """Registra las horas extras de trabajo de un empleado"""
     limpiar_pantalla()
     empleado = buscar_empleado()
@@ -132,7 +133,20 @@ def registrar_horas_extra():
     empleado.asistencia.registrar_trabajo_extra(fecha, horas)
     print("Registrado exitosamente")
 
-def registrar_incapacidad():
+def registrar_feriado_trabajado() -> None:
+    """Registra el trabajo de en un dia feriado"""
+    limpiar_pantalla()
+    empleado = buscar_empleado()
+    if not empleado:
+        return
+    fecha = pedir_fecha("Ingrese la fecha de trabajo (Dia-Mes-Año): ")
+    if not comprobar_feriado(fecha):
+        print("La fecha ingresada no es un dia feriado")
+        return None
+    empleado.asistencia.registrar_feriado_trabajado(fecha)
+    print("Registrado exitosamente")
+
+def registrar_incapacidad() -> None:
     """Registra una incapacidad de un empleado"""
     limpiar_pantalla()
     empleado = buscar_empleado()
@@ -144,7 +158,7 @@ def registrar_incapacidad():
     empleado.asistencia.registrar_incapacidad(inicio, fin, motivo)
     print("Registrado exitosamente")
 
-def registrar_licensia():
+def registrar_licensia() -> None:
     """Registra una licensia de un emplado"""
     limpiar_pantalla()
     empleado = buscar_empleado()
@@ -156,7 +170,7 @@ def registrar_licensia():
     empleado.asistencia.registrar_licensia(inicio, fin, motivo)
     print("Registrado exitosamente")
 
-def gestion_ausencias_llegadas_tardias():
+def gestion_ausencias_llegadas_tardias() -> None:
     """Opciones del menu
 
     - Consultar registros
@@ -184,7 +198,7 @@ def gestion_ausencias_llegadas_tardias():
             case _: print("Opción Invalida")
         esperar_tecla()
 
-def vacaciones_permisos():
+def vacaciones_permisos() -> None:
     """Opciones del menu
 
     - Consultar registros
@@ -192,6 +206,7 @@ def vacaciones_permisos():
     - Registrar vacacion
     - Registrar permiso
     - Registrar horas extras
+    - Registrar feriado trabajado
     - Regresar
     """
     while True:
@@ -203,6 +218,7 @@ def vacaciones_permisos():
         print("3. Registrar vacacion")
         print("4. Registrar permiso")
         print("5. Registrar horas extras")
+        print("6. Registrar feriado trabajado")
         print("0. Regresar")
         print("=" * 50)
         match pedir_numero("Ingrese una opcion: "):
@@ -211,11 +227,12 @@ def vacaciones_permisos():
             case 3: registrar_vacacion()
             case 4: registrar_permiso()
             case 5: registrar_horas_extra()
+            case 6: registrar_feriado_trabajado()
             case 0: break
             case _: print("Opción Invalida")
         esperar_tecla()
 
-def incapacidades_licencias():
+def incapacidades_licencias() -> None:
     """Opciones del menu
 
     - Consultar registros
@@ -258,7 +275,7 @@ def gestion_asistencia() -> None:
         print("1. Registro de ausencias y llegadas tardias")
         print("2. Registro de vacaciones, permisos y horas extra")
         print("3. Gestión de incapacidades y licencias")
-        print("0. Regresar al menu principal")
+        print("0. Regresar")
         print("=" * 50)
         match pedir_numero("Ingrese una opcion: "):
             case 1: gestion_ausencias_llegadas_tardias()

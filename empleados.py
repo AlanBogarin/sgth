@@ -47,15 +47,16 @@ def cargar_predeterminado() -> None:
     ]:
         for a in range(2000, 2030):
             empleado.asistencia.registrar_llegada_tardia(date(a, 9, randint(1, 30)))
-            empleado.asistencia.registrar_incapacidad(date(a, 10, 1), date(1, 10, 5), "Enfermedad contagiosa")
+            empleado.asistencia.registrar_incapacidad(date(a, 10, 1), date(a, 10, 5), "Enfermedad contagiosa")
             empleado.asistencia.registrar_ausencia(date(a, randint(5, 7), randint(5, 7)), None)
-            empleado.asistencia.registrar_vacacion(date(a, 12, 1), date(2001, 12, 30))
+            empleado.asistencia.registrar_vacacion(date(a, 12, 1), date(a, 12, 30))
             empleado.asistencia.registar_permiso(date(a, randint(6, 8), randint(2, 20)), "Reparar vehiculo")
             empleado.asistencia.registrar_trabajo_extra(date(a, randint(1, 4), randint(1, 20)), randint(1, 5))
             empleado.asistencia.registrar_feriado_trabajado(date(a, 1, 1))
-            empleados.append(empleado)
+        empleados.append(empleado)
 
-def registrar_empleado():
+def registrar_empleado() -> None:
+    limpiar_pantalla()
     ci = int(pedir_numero("Ingrese el CI: "))
     nombre = pedir_texto("Ingrese nombre: ")
     apellido = pedir_texto("Ingrese apellido: ")
@@ -71,7 +72,13 @@ def registrar_empleado():
     empleados.append(empleado)
     print("Empleado registrado con èxito.")
 
-def consultar_empleado():
+def consultar_empleados() -> None:
+    limpiar_pantalla()
+    for empleado in empleados_activos():
+        empleado.mostrar()
+
+def consultar_empleado() -> None:
+    limpiar_pantalla()
     empleado = buscar_empleado()
     if not empleado:
         return
@@ -89,7 +96,8 @@ def consultar_empleado():
     print("Puesto:", empleado.puesto.nombre)
     print("Salario:", empleado.puesto.salario_actual())
 
-def modificar_empleado():
+def modificar_empleado() -> None:
+    limpiar_pantalla()
     empleado = buscar_empleado()
     if not empleado:
         return
@@ -105,23 +113,25 @@ def modificar_empleado():
     salario = pedir_numero_positivo_opcional("Ingrese nuevo salario: ")
     if salario is not None:
         salario = int(salario)
-    if puesto:
-        inicio = pedir_fecha("Ingrese fecha de inicio (Dia-Mes-Año): ")
-    else:
+    if not puesto:
         inicio = pedir_fecha_opcional("Ingrese fecha de modificacion (Dia-Mes-Año): ")
+    else:
+        inicio = pedir_fecha("Ingrese fecha de inicio (Dia-Mes-Año): ")
     empleado.modificar_puesto(puesto, salario, inicio)
     print("Datos del empleado modificado con exito")
 
-def borrar_empleado():
+def borrar_empleado() -> None:
+    limpiar_pantalla()
     empleado = buscar_empleado()
     if empleado:
         empleado.inactivo = True
         print("Empleado borrado con èxito.")
 
-def gestion_empleados():
+def gestion_empleados() -> None:
     """Opciones del menu
 
     - Consultar empleados
+    - Consultar un empleado
     - Agregar empleado
     - Editar datos del empleado
     - Borrar empleado
@@ -131,17 +141,19 @@ def gestion_empleados():
         limpiar_pantalla()
         # 17 + 1 + 14 + 1 + 15 = 50
         print("=" * 17, "MENU EMPLEADOS", "=" * 17)
-        print("1. Consultar Empleado")
-        print("2. Registrar Empleado")
-        print("3. Modificar Empleado")
-        print("4. Borrar Empleado")
-        print("0. Salir")
+        print("1. Consultar empleados")
+        print("2. Consultar empleado")
+        print("3. Registrar empleado")
+        print("4. Modificar empleado")
+        print("5. Borrar empleado")
+        print("0. Regresar")
         print("=" * 50)
         match pedir_numero("Seleccione una opción: "):
-            case 1: consultar_empleado()
-            case 2: registrar_empleado()
-            case 3: modificar_empleado()
-            case 4: borrar_empleado()
+            case 1: consultar_empleados()
+            case 2: consultar_empleado()
+            case 3: registrar_empleado()
+            case 4: modificar_empleado()
+            case 5: borrar_empleado()
             case 0: break
             case _: print("Opcion Invalida")
         esperar_tecla()

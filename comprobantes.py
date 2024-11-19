@@ -3,30 +3,6 @@ from modelos import RegistroSalarial
 from nominas import buscar_registro
 from utilidades import FMT_FECHA_MES, esperar_tecla, limpiar_pantalla, pedir_numero
 
-"""
-INFORME PARA {nombre} {apellido} del {fecha}
-Salario bruto: {salario_bruto}
-
-DESCUENTOS
-Ausencias: 
-Descuento: 
-Llegadas tardias: 
-Descuento: 
-Total: 
-
-BONOS
-Trabajos extras: 
-Bono: 
-Feriados trabajados: 
-Bono: 
-Total: 
-
-Salario: 
-IPS: 
-
-Total a pagar: 
-"""
-
 def mostrar_comprobante(rsalarial: RegistroSalarial) -> None:
     """Muestra una informacion detallada sobre el registro salarial generado"""
     print("INFORME PARA", rsalarial.empleado.nombre, rsalarial.empleado.apellido, "del", rsalarial.fecha.strftime(FMT_FECHA_MES))
@@ -52,7 +28,7 @@ def mostrar_comprobante(rsalarial: RegistroSalarial) -> None:
     print()
     print("Total a pagar:", rsalarial.calcular_salario())
 
-def generar_comprobantes():
+def generar_comprobantes() -> None:
     limpiar_pantalla()
     registro = buscar_registro()
     if not registro:
@@ -68,7 +44,7 @@ def generar_comprobantes():
     print("Total salario:", registro.pago_empleados())
     print("Total a pagar:", registro.pago_empleados() + registro.pago_ips())
 
-def generar_informe():
+def generar_comprobante() -> None:
     limpiar_pantalla()
     registro = buscar_registro()
     if not registro:
@@ -99,11 +75,11 @@ def generacion_comprobantes() -> None:
         # 16 + 1 + 16 + 1 + 16
         print("=" * 16, "MENU COMPROBANTE", "=" * 16)
         print("1. Generar comprobantes")
-        print("2. Generar informe")
+        print("2. Generar un comprobante")
         print("0. Regresar")
         match pedir_numero("Ingrese una opcion: "):
-            case 1: pass
-            case 2: pass
+            case 1: generar_comprobantes()
+            case 2: generar_comprobante()
             case 0: break
             case _: print("Opción Invalida")
         esperar_tecla()

@@ -34,7 +34,9 @@ def esperar_tecla() -> None:
 
 def limpiar_pantalla() -> None:
     """Eliminar el texto mostrado en pantalla"""
-    print("\n" * 50)
+    # print("\n" * 50)
+    import os
+    os.system("cls")
 
 def pedir_texto(info: str) -> str:
     """Asegurar el retorno de un texto no vacio"""

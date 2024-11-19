@@ -6,6 +6,7 @@ from utilidades import (
     DESCUENTO_IPS,
     DESCUENTO_LLEGADA_TARDIA,
     FMT_FECHA,
+    FMT_FECHA_MES,
     comprobar_feriado
 )
 
@@ -125,11 +126,6 @@ class Asistencia:
         if comprobar_feriado(fecha):
             self.feriados_trabajados.append(FeriadoTrabajado(fecha))
 
-    def mostrar(self) -> None:
-        """Mostrar una informacion basica de una sola linea (solo cantidades)"""
-        print("ausencias:", len(self.ausencias), "llegadas tardias:", len(self.llegadas_tardias), "vacaciones:", len(self.vacaciones),
-              "permisos:", len(self.permisos), "incapacidades:", len(self.incapacidades), "licensias:", len(self.licensias), "trabajos extras:", len(self.trabajos_extra))
-
 class Puesto:
     def __init__(self, nombre: str, salario: int, inicio: date) -> None:
         self.nombre = nombre
@@ -223,72 +219,76 @@ class Empleado:
 
     def mostrar(self) -> None:
         """Mostrar una informacion basica de una sola linea"""
-        print(f"ID: {self.id} nombre: {self.nombre}, {self.apellido} puesto: {self.puesto.nombre} salario: {self.puesto.salario_actual()}")
+        print(f"id: {self.id} nombre: {self.nombre}, {self.apellido} puesto: {self.puesto.nombre} salario: {self.puesto.salario_actual()}")
 
 class RegistroSalarial:
     def __init__(self, fecha: date, empleado: Empleado) -> None:
         self.fecha = fecha
         self.empleado = empleado
         self.salario = empleado.puesto.salario_actual()
+        """Salario bruto"""
         # descuento
-        self.ausencias = empleado.asistencia.ausencias
-        self.llegadas_tardias = empleado.asistencia.llegadas_tardias
+        self.ausencias: list[Ausencia] = []
+        """Ausencias del mes"""
+        self.llegadas_tardias: list[LlegadaTardia] = []
+        """Llegadas tardias del mes"""
         # neutral
         self.vacaciones = empleado.asistencia.vacaciones
         self.permisos = empleado.asistencia.permisos
         self.incapacidades = empleado.asistencia.incapacidades
         self.licensias = empleado.asistencia.licensias
         # aumento
-        self.trabajos_extra = empleado.asistencia.trabajos_extra
-        self.feriados_trabajados = empleado.asistencia.feriados_trabajados
+        self.trabajos_extra: list[TrabajoExtra] = []
+        """Trabajos extras del mes"""
+        self.feriados_trabajados: list[FeriadoTrabajado] = []
+        """Feriados trabajados del mes"""
+        # filtrar los registros que sean de la fecha ingresada
+        for ausencia in empleado.asistencia.ausencias:
+            if (ausencia.fecha.month, ausencia.fecha.year) == (fecha.month, fecha.year):
+                self.ausencias.append(ausencia)
+        for llegada in empleado.asistencia.llegadas_tardias:
+            if (llegada.fecha.month, llegada.fecha.year) == (fecha.month, fecha.year):
+                self.llegadas_tardias.append(llegada)
+        for extra in empleado.asistencia.trabajos_extra:
+            if (extra.fecha.month, extra.fecha.year) == (fecha.month, fecha.year):
+                self.trabajos_extra.append(extra)
+        for feriado in empleado.asistencia.feriados_trabajados:
+            if (feriado.fecha.month, feriado.fecha.year) == (self.fecha.month, self.fecha.year):
+                self.feriados_trabajados.append(feriado)
 
     def salario_por_hora(self) -> float:
-        """Calcula el salario por hora"""
-        return self.salario / 30 / 8
+        """Calcula el salario bruto por hora"""
+        return round(self.salario / 30 / 8, 2)
 
     def descuento_ausencia(self) -> float:
-        """Calcula el descuento por ausencias"""
-        descuento = 0.0
-        for ausencia in self.ausencias:
-            if (ausencia.fecha.month, ausencia.fecha.year) != (self.fecha.month, self.fecha.year):
-                continue
-            descuento += DESCUENTO_AUSENCIA
-        return descuento
+        """Calcula el descuento por ausencias del mes"""
+        return len(self.ausencias) * DESCUENTO_AUSENCIA
 
     def descuento_llegada_tardia(self) -> float:
-        """Calcula el descuento por llegadas tardias"""
-        descuento = 0.0
-        for llegada in self.llegadas_tardias:
-            if (llegada.fecha.month, llegada.fecha.year) != (self.fecha.month, self.fecha.year):
-                continue
-            descuento += DESCUENTO_LLEGADA_TARDIA
-        return descuento
+        """Calcula el descuento por llegadas tardias del mes"""
+        return len(self.llegadas_tardias) * DESCUENTO_LLEGADA_TARDIA
 
     def calcular_descuentos(self) -> float:
         """Calcula la tarifa final del descuento por faltas"""
         return self.descuento_ausencia() + self.descuento_llegada_tardia()
 
     def bono_trabajo_extra(self) -> float:
-        """Calcula el bono por trabajos extras"""
+        """Calcula el bono por trabajos extras del mes"""
         bono = 0.0
         salario_por_hora = self.salario_por_hora()
         for extra in self.trabajos_extra:
-            if (extra.fecha.month, extra.fecha.year) != (self.fecha.month, self.fecha.year):
-                continue
             if comprobar_feriado(extra.fecha):
                 porcentaje = BONO_DIA_FERIADO
             else:
                 porcentaje = BONO_TRABAJO_EXTRA
             bono += extra.horas * (salario_por_hora + salario_por_hora * porcentaje)
-        return bono
+        return round(bono, 2)
 
     def bono_feriado_trabajado(self) -> float:
-        """Calcula el bono por trabajos en dias feriados/festivos"""
+        """Calcula el bono por trabajos en dias feriados/festivos del mes"""
         bono = 0.0
         salario_por_hora = self.salario_por_hora()
         for feriado in self.feriados_trabajados:
-            if (feriado.fecha.month, feriado.fecha.year) != (self.fecha.month, self.fecha.year):
-                continue
             for extra in self.trabajos_extra:
                 # comprueba si ya se incluyo como trabajo extra
                 if extra.fecha == feriado.fecha:
@@ -296,7 +296,7 @@ class RegistroSalarial:
             else:
                 # solo si no se calcula como trabajo extra, para evitar calculo duplicado
                 bono += 8 * (salario_por_hora + salario_por_hora * BONO_DIA_FERIADO)
-        return bono
+        return round(bono, 2)
 
     def calcular_bonos(self) -> float:
         """Calcula la tarifa de aumento por bonos"""
@@ -308,15 +308,15 @@ class RegistroSalarial:
 
     def calcular_ips(self) -> float:
         """Calcula el descuento IPS"""
-        return self.calcular_salario_neto() * DESCUENTO_IPS
+        return round(self.calcular_salario_neto() * DESCUENTO_IPS, 2)
 
     def calcular_salario(self) -> float:
         """Calcula el salario total del empleado incluyendo horas extras y deducciones."""
-        return self.calcular_salario_neto() - self.calcular_ips()
+        return round(self.calcular_salario_neto() - self.calcular_ips(), 2)
 
     def mostrar(self) -> None:
         """Mostrar una informacion basica de una sola linea"""
-        print("ID:", self.empleado.id, "descuentos:", self.calcular_descuentos(), "bonos:", self.calcular_bonos(), "salario:", self.calcular_salario())
+        print("id:", self.empleado.id, "descuentos:", self.calcular_descuentos(), "bonos:", self.calcular_bonos(), "salario:", self.calcular_salario())
 
 class RegistroMensual:
     def __init__(self, fecha: date, registros: list[RegistroSalarial] | None = None) -> None:
@@ -341,11 +341,14 @@ class RegistroMensual:
         monto = 0.0
         for registro in self.registros:
             monto += registro.calcular_ips()
-        return monto
+        return round(monto, 2)
 
     def pago_empleados(self) -> float:
         """Monto a pagar a empleados (suma de todos los salarios)"""
         monto = 0.0
         for registro in self.registros:
             monto += registro.calcular_salario()
-        return monto
+        return round(monto, 2)
+
+    def mostrar(self) -> None:
+        print(self.fecha.strftime(FMT_FECHA_MES), "registros:", len(self.registros))
